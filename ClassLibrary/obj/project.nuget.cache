@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "MGRN6zCfBxPPGaX9aC2fLAO5eBmrJyrA9uNsNrFWc37nU1VsVFkVAH/DOnXm1n4nIKulykq3uBLOnrrG6Y2IHw==",
+  "dgSpecHash": "JmnaZvjo6JSuTZL/Dcn4HD12/Nn7eBZamCIT0oRO9MmzOEBV0RqvAIW1kBeNAGqS4+QySVsiwr4c0VRVlYBbXw==",
   "success": true,
   "projectFilePath": "/Users/timur/hse/csharp/HW7/ClassLibrary/ClassLibrary.csproj",
   "expectedPackageFiles": [
     "/Users/timur/.nuget/packages/newtonsoft.json/13.0.1/newtonsoft.json.13.0.1.nupkg.sha512",
+    "/Users/timur/.nuget/packages/system.componentmodel.annotations/5.0.0/system.componentmodel.annotations.5.0.0.nupkg.sha512",
+    "/Users/timur/.nuget/packages/system.runtime.compilerservices.unsafe/4.5.3/system.runtime.compilerservices.unsafe.4.5.3.nupkg.sha512",
+    "/Users/timur/.nuget/packages/system.threading.tasks.extensions/4.5.4/system.threading.tasks.extensions.4.5.4.nupkg.sha512",
     "/Users/timur/.nuget/packages/telegram.bot/20.0.0-alpha.1/telegram.bot.20.0.0-alpha.1.nupkg.sha512"
   ],
   "logs": []
