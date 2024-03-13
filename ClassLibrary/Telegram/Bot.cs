@@ -39,7 +39,9 @@ class Bot
         var me = await bot.GetMeAsync();
 
         Console.WriteLine($"Start listening for @{me.Username}");
-        Console.ReadLine();
+        do
+        {
+        } while (true);
     }
 
     private async Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken cancellationToken)
