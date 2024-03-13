@@ -52,7 +52,6 @@ class Bot
             var chatId = update.Type == UpdateType.Message
                 ? update.Message.Chat.Id
                 : update.CallbackQuery.Message.Chat.Id;
-            ConversationStates.TryAdd(chatId, ConversationState.WaitingForFile);
 
             if (update.CallbackQuery is { } callbackQuery)
             {
@@ -60,7 +59,7 @@ class Bot
                 {
                     case "chooseAnotherFile":
                         await bot.AnswerCallbackQueryAsync(callbackQuery.Id,
-                            "\ud83d\udca1Чтобы обработать другой файл, просто отправьте его в любой момент.",
+                            "\ud83d\udca1Чтобы обработать другой файл, просто отправьте его в чат",
                             showAlert: true);
                         break;
                     case "backToMainMenu":
@@ -85,7 +84,8 @@ class Bot
                         {
                             await bot.DeleteMessageAsync(chatId, MenuMessage[chatId].MessageId);
                             await bot.SendTextMessageAsync(chatId, "Файл пуст.");
-                            MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId, "Выберите, что сделать с файлом:",
+                            MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId,
+                                "Выберите, что сделать с файлом:",
                                 replyMarkup: Menu.MainMenu);
                             return;
                         }
@@ -93,10 +93,12 @@ class Bot
                         await bot.DeleteMessageAsync(chatId, MenuMessage[chatId].MessageId);
                         using (var memoryStream = new CSVProcessing().Write(Train[chatId]))
                         {
-                            await bot.SendDocumentAsync(chatId, new InputFileStream(memoryStream, "result.csv"));
+                            await bot.SendDocumentAsync(chatId, 
+                                new InputFileStream(memoryStream, "result.csv"));
                         }
 
-                        MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId, "Выберите, что сделать с файлом:",
+                        MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId, 
+                            "Выберите, что сделать с файлом:",
                             replyMarkup: Menu.MainMenu);
                         ConversationStates[chatId] = ConversationState.MainMenu;
                         break;
@@ -106,7 +108,8 @@ class Bot
                         {
                             await bot.DeleteMessageAsync(chatId, MenuMessage[chatId].MessageId);
                             await bot.SendTextMessageAsync(chatId, "Файл пуст.");
-                            MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId, "Выберите, что сделать с файлом:",
+                            MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId, 
+                                "Выберите, что сделать с файлом:",
                                 replyMarkup: Menu.MainMenu);
                             return;
                         }
@@ -114,25 +117,31 @@ class Bot
                         await bot.DeleteMessageAsync(chatId, MenuMessage[chatId].MessageId);
                         using (var memoryStream = new JSONProcessing().Write(Train[chatId]))
                         {
-                            await bot.SendDocumentAsync(chatId, new InputFileStream(memoryStream, "result.json"));
+                            await bot.SendDocumentAsync(chatId, 
+                                new InputFileStream(memoryStream, "result.json"));
                         }
 
-                        MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId, "Выберите, что сделать с файлом:",
+                        MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId, 
+                            "Выберите, что сделать с файлом:",
                             replyMarkup: Menu.MainMenu);
                         ConversationStates[chatId] = ConversationState.MainMenu;
                         break;
 
                     case "timeStart":
                         Train[chatId] = Train[chatId].OrderBy(train => train.TimeStart).ToArray();
-                        await bot.EditMessageTextAsync(chatId, MenuMessage[chatId].MessageId, "Данные отсортированы.");
-                        MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId, "Выберите, что сделать с файлом:",
+                        await bot.EditMessageTextAsync(chatId, MenuMessage[chatId].MessageId, 
+                            "Данные отсортированы.");
+                        MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId, 
+                            "Выберите, что сделать с файлом:",
                             replyMarkup: Menu.MainMenu);
                         ConversationStates[chatId] = ConversationState.MainMenu;
                         break;
                     case "timeEnd":
                         Train[chatId] = Train[chatId].OrderBy(train => train.TimeEnd).ToArray();
-                        await bot.EditMessageTextAsync(chatId, MenuMessage[chatId].MessageId, "Данные отсортированы.");
-                        MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId, "Выберите, что сделать с файлом:",
+                        await bot.EditMessageTextAsync(chatId, MenuMessage[chatId].MessageId, 
+                            "Данные отсортированы.");
+                        MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId, 
+                            "Выберите, что сделать с файлом:",
                             replyMarkup: Menu.MainMenu);
                         ConversationStates[chatId] = ConversationState.MainMenu;
                         break;
@@ -146,7 +155,8 @@ class Bot
                         ConversationStates[chatId] = ConversationState.WaitingForStationEnd;
                         break;
                     case "stationStartandEnd":
-                        await bot.SendTextMessageAsync(chatId, "Введите станцию отправления и прибытия через дефис:");
+                        await bot.SendTextMessageAsync(chatId, 
+                            "Введите станцию отправления и прибытия через дефис:");
                         ConversationStates[chatId] = ConversationState.WaitingForStationStartAndEnd;
                         break;
                 }
@@ -191,12 +201,6 @@ class Bot
 
             if (message.Text is not { } messageText) return;
 
-            if (messageText.StartsWith("/start"))
-            {
-                await bot.SendTextMessageAsync(chatId, "Привет! Отправь мне файл CSV или JSON для обработки.");
-                return;
-            }
-
             try
             {
                 switch (ConversationStates[chatId])
@@ -205,7 +209,8 @@ class Bot
                         Train[chatId] = Train[chatId].Where(train => train.StationStart == messageText).ToArray();
                         await bot.DeleteMessageAsync(chatId, MenuMessage[chatId].MessageId);
                         await bot.SendTextMessageAsync(chatId, "Данные отфильтрованы.");
-                        MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId, "Выберите, что сделать с файлом:",
+                        MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId, 
+                            "Выберите, что сделать с файлом:",
                             replyMarkup: Menu.MainMenu);
                         ConversationStates[chatId] = ConversationState.MainMenu;
                         break;
@@ -213,7 +218,8 @@ class Bot
                         Train[chatId] = Train[chatId].Where(train => train.StationEnd == messageText).ToArray();
                         await bot.DeleteMessageAsync(chatId, MenuMessage[chatId].MessageId);
                         await bot.SendTextMessageAsync(chatId, "Данные отфильтрованы.");
-                        MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId, "Выберите, что сделать с файлом:",
+                        MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId, 
+                            "Выберите, что сделать с файлом:",
                             replyMarkup: Menu.MainMenu);
                         ConversationStates[chatId] = ConversationState.MainMenu;
                         break;
@@ -225,7 +231,8 @@ class Bot
                             .ToArray();
                         await bot.DeleteMessageAsync(chatId, MenuMessage[chatId].MessageId);
                         await bot.SendTextMessageAsync(chatId, "Данные отфильтрованы.");
-                        MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId, "Выберите, что сделать с файлом:",
+                        MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId, 
+                            "Выберите, что сделать с файлом:",
                             replyMarkup: Menu.MainMenu);
                         ConversationStates[chatId] = ConversationState.MainMenu;
                         break;
@@ -243,7 +250,8 @@ class Bot
         
     }
 
-    private Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
+    private Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception,
+        CancellationToken cancellationToken)
     {
         var ErrorMessage = exception switch
         {
