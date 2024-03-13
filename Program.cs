@@ -10,7 +10,6 @@ public class Program
     try
     {
       await bot.Run();
-      Console.ReadLine();
     }
     catch (Exception e)
     {
