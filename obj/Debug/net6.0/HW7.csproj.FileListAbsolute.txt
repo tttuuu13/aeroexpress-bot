@@ -15,5 +15,4 @@
 /Users/timur/hse/csharp/HW7/obj/Debug/net6.0/HW7.pdb
 /Users/timur/hse/csharp/HW7/obj/Debug/net6.0/HW7.genruntimeconfig.cache
 /Users/timur/hse/csharp/HW7/obj/Debug/net6.0/ref/HW7.dll
-/Users/timur/hse/csharp/HW7/obj/Debug/net6.0/HW7.sourcelink.json
-/Users/timur/hse/csharp/HW7/obj/Debug/net6.0/HW7.csproj.Up2Date
+/Users/timur/hse/csharp/HW7/obj/Debug/net6.0/HW7.csproj.CopyComplete
