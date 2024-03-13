@@ -201,6 +201,12 @@ class Bot
 
             if (message.Text is not { } messageText) return;
 
+            if (!ConversationStates.ContainsKey(chatId))
+            {
+                await bot.SendTextMessageAsync(chatId, "Привет!");
+                ConversationStates[chatId] = ConversationState.WaitingForFile;
+            }
+            
             try
             {
                 switch (ConversationStates[chatId])
@@ -236,7 +242,7 @@ class Bot
                             replyMarkup: Menu.MainMenu);
                         ConversationStates[chatId] = ConversationState.MainMenu;
                         break;
-                    default:
+                    case ConversationState.WaitingForFile:
                         await bot.SendTextMessageAsync(chatId, "Отправьте CSV или JSON файл с расписанием поездов.");
                         break;
                 }
