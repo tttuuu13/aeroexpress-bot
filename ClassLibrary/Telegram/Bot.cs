@@ -248,7 +248,7 @@ class Bot
                             replyMarkup: Menu.MainMenu);
                         ConversationStates[chatId] = ConversationState.MainMenu;
                         break;
-                    case ConversationState.WaitingForFile:
+                    default:
                         await bot.SendTextMessageAsync(chatId, "Отправьте CSV или JSON файл с расписанием поездов.");
                         break;
                 }
