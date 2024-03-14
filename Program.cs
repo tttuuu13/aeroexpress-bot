@@ -4,8 +4,7 @@ public class Program
 {
   static async Task Main()
   {
-    //string token = System.Environment.GetEnvironmentVariable("TOKEN");
-    string token = "7123360905:AAE-89fU1NoXeX9JVhIADHRsoBQpNn1h7wY";
+    string token = System.Environment.GetEnvironmentVariable("TOKEN");
     Bot bot = new Bot(token);
     try
     {

@@ -6,11 +6,17 @@ using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
+/// <summary>
+/// Bot class.
+/// </summary>
 class Bot
 {
+    /// Stores conversation state for each user.
     private Dictionary<long, ConversationState> ConversationStates = new();
+    // Stores active menu message for each user.
     private Dictionary<long, Message> MenuMessage = new();
-    private Dictionary<long, Train[]> Train = new();
+    // Stores data for each user.
+    private Dictionary<long, Train[]> Data = new();
     private readonly string _token;
 
     public Bot(string token)
@@ -80,7 +86,7 @@ class Bot
                             "Выберите формат файла:", replyMarkup: Menu.ChoseFormat);
                         break;
                     case "csv":
-                        if (Train[chatId].Length == 0)
+                        if (Data[chatId].Length == 0)
                         {
                             await bot.DeleteMessageAsync(chatId, MenuMessage[chatId].MessageId);
                             await bot.SendTextMessageAsync(chatId, "Файл пуст.");
@@ -91,7 +97,7 @@ class Bot
                         }
 
                         await bot.DeleteMessageAsync(chatId, MenuMessage[chatId].MessageId);
-                        using (var memoryStream = new CSVProcessing().Write(Train[chatId]))
+                        using (var memoryStream = new CSVProcessing().Write(Data[chatId]))
                         {
                             await bot.SendDocumentAsync(chatId, 
                                 new InputFileStream(memoryStream, "result.csv"));
@@ -104,7 +110,7 @@ class Bot
                         break;
 
                     case "json":
-                        if (Train[chatId].Length == 0)
+                        if (Data[chatId].Length == 0)
                         {
                             await bot.DeleteMessageAsync(chatId, MenuMessage[chatId].MessageId);
                             await bot.SendTextMessageAsync(chatId, "Файл пуст.");
@@ -115,7 +121,7 @@ class Bot
                         }
 
                         await bot.DeleteMessageAsync(chatId, MenuMessage[chatId].MessageId);
-                        using (var memoryStream = new JSONProcessing().Write(Train[chatId]))
+                        using (var memoryStream = new JSONProcessing().Write(Data[chatId]))
                         {
                             await bot.SendDocumentAsync(chatId, 
                                 new InputFileStream(memoryStream, "result.json"));
@@ -128,7 +134,7 @@ class Bot
                         break;
 
                     case "timeStart":
-                        Train[chatId] = Train[chatId].OrderBy(train => train.TimeStart).ToArray();
+                        Data[chatId] = Data[chatId].OrderBy(train => train.TimeStart).ToArray();
                         await bot.EditMessageTextAsync(chatId, MenuMessage[chatId].MessageId, 
                             "Данные отсортированы.");
                         MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId, 
@@ -137,7 +143,7 @@ class Bot
                         ConversationStates[chatId] = ConversationState.MainMenu;
                         break;
                     case "timeEnd":
-                        Train[chatId] = Train[chatId].OrderBy(train => train.TimeEnd).ToArray();
+                        Data[chatId] = Data[chatId].OrderBy(train => train.TimeEnd).ToArray();
                         await bot.EditMessageTextAsync(chatId, MenuMessage[chatId].MessageId, 
                             "Данные отсортированы.");
                         MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId, 
@@ -176,10 +182,10 @@ class Bot
                     {
                         case "text/csv":
                         case "text/comma-separated-values":
-                            Train[chatId] = new CSVProcessing().Read(memoryStream);
+                            Data[chatId] = new CSVProcessing().Read(memoryStream);
                             break;
                         case "application/json":
-                            Train[chatId] = new JSONProcessing().Read(memoryStream);
+                            Data[chatId] = new JSONProcessing().Read(memoryStream);
                             break;
                         default:
                             await bot.SendTextMessageAsync(chatId, "Формат не поддерживается.");
@@ -212,7 +218,7 @@ class Bot
                 switch (ConversationStates[chatId])
                 {
                     case ConversationState.WaitingForStationStart:
-                        Train[chatId] = Train[chatId].Where(train => train.StationStart == messageText).ToArray();
+                        Data[chatId] = Data[chatId].Where(train => train.StationStart == messageText).ToArray();
                         await bot.DeleteMessageAsync(chatId, MenuMessage[chatId].MessageId);
                         await bot.SendTextMessageAsync(chatId, "Данные отфильтрованы.");
                         MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId, 
@@ -221,7 +227,7 @@ class Bot
                         ConversationStates[chatId] = ConversationState.MainMenu;
                         break;
                     case ConversationState.WaitingForStationEnd:
-                        Train[chatId] = Train[chatId].Where(train => train.StationEnd == messageText).ToArray();
+                        Data[chatId] = Data[chatId].Where(train => train.StationEnd == messageText).ToArray();
                         await bot.DeleteMessageAsync(chatId, MenuMessage[chatId].MessageId);
                         await bot.SendTextMessageAsync(chatId, "Данные отфильтрованы.");
                         MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId, 
@@ -232,7 +238,7 @@ class Bot
                     case ConversationState.WaitingForStationStartAndEnd:
                         string stationStart = messageText.Split("-")[0];
                         string stationEnd = messageText.Split("-")[1];
-                        Train[chatId] = Train[chatId]
+                        Data[chatId] = Data[chatId]
                             .Where(train => train.StationStart == stationStart && train.StationEnd == stationEnd)
                             .ToArray();
                         await bot.DeleteMessageAsync(chatId, MenuMessage[chatId].MessageId);
