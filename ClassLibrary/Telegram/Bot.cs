@@ -193,6 +193,7 @@ class Bot
                             return;
                     }
 
+                    if (MenuMessage.TryGetValue(chatId, out var value)) await bot.DeleteMessageAsync(chatId, value.MessageId);
                     MenuMessage[chatId] = await bot.SendTextMessageAsync(chatId,
                         "Файл открыт! Выберите, что с ним сделать:", replyMarkup: Menu.MainMenu);
                     ConversationStates[chatId] = ConversationState.MainMenu;

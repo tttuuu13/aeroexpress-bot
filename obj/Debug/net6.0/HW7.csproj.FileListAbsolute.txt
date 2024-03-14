@@ -16,3 +16,10 @@
 /Users/timur/hse/csharp/HW7/obj/Debug/net6.0/HW7.genruntimeconfig.cache
 /Users/timur/hse/csharp/HW7/obj/Debug/net6.0/ref/HW7.dll
 /Users/timur/hse/csharp/HW7/obj/Debug/net6.0/HW7.csproj.CopyComplete
+/Users/timur/hse/csharp/HW7/bin/Debug/net6.0/Microsoft.Extensions.DependencyInjection.dll
+/Users/timur/hse/csharp/HW7/bin/Debug/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/Users/timur/hse/csharp/HW7/bin/Debug/net6.0/Microsoft.Extensions.Logging.dll
+/Users/timur/hse/csharp/HW7/bin/Debug/net6.0/Microsoft.Extensions.Logging.Abstractions.dll
+/Users/timur/hse/csharp/HW7/bin/Debug/net6.0/Microsoft.Extensions.Options.dll
+/Users/timur/hse/csharp/HW7/bin/Debug/net6.0/Microsoft.Extensions.Primitives.dll
+/Users/timur/hse/csharp/HW7/bin/Debug/net6.0/System.Diagnostics.DiagnosticSource.dll
