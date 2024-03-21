@@ -6,7 +6,7 @@ public class Program
   {
     // Not storing sensetive data in the code, using Heroku config variables instead.
     string token = System.Environment.GetEnvironmentVariable("TOKEN");
-    Bot bot = new Bot(token, "../../../var/logs.txt");
+    Bot bot = new Bot(token, "../../../logs.txt");
     await bot.Run();
   }
 }

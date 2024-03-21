@@ -22,8 +22,15 @@ public class FileLogger : ILogger
 
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
     {
-        string logRecord = $"{DateTime.UtcNow:O} [{logLevel}] {formatter(state, exception)}";
-        File.AppendAllText(filePath, logRecord + Environment.NewLine);
+        try
+        {
+            string logRecord = $"{DateTime.UtcNow:O} [{logLevel}] {formatter(state, exception)}";
+            File.AppendAllText(filePath, logRecord + Environment.NewLine);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
     }
 }
 
