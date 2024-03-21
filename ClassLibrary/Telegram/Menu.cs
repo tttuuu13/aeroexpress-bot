@@ -1,6 +1,9 @@
 using Telegram.Bot.Types.ReplyMarkups;
 namespace ClassLibrary.Telegram;
 
+/// <summary>
+/// Inline bot menus
+/// </summary>
 public static class Menu
 {
   public static readonly InlineKeyboardMarkup MainMenu = new InlineKeyboardMarkup(new[]

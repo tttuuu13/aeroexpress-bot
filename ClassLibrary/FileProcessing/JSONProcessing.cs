@@ -4,7 +4,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace ClassLibrary;
-//TODO дописать десериализацию после того как сделаю сериализацию
 public class JSONProcessing
 {
     public Train[] Read(MemoryStream memoryStream)
